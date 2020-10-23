@@ -9,7 +9,7 @@ from tensorflow.keras.applications.inception_v3 import preprocess_input
 from tensorflow.keras.applications.imagenet_utils import decode_predictions
 
 
-import cv2
+from cv2 import imdecode, IMREAD_COLOR, resize
 import urllib
 import numpy as np
 from PIL import Image
@@ -33,14 +33,14 @@ def url_to_image(url):
     except:
         resp = urllib.request.urlopen(url)
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    image = imdecode(image, IMREAD_COLOR)
     # return the image
     return image
 
 
 def resize_img(img):
     img = img[...,::-1]
-    img = cv2.resize(img, (299,299))
+    img = resize(img, (299,299))
     img = img.reshape(1, 299,299,3)
     img = preprocess_input(img)
     return img
